@@ -27,7 +27,7 @@ jobs:
 
     - name: Build Electron app for macOS
       run: |
-        npm run dist # 假设你已经在 package.json 中配置了 dist 脚本来进行打包
+        npm run build # 假设你已经在 package.json 中配置了 dist 脚本来进行打包
       env:
         ELECTRON_BUILDER_SKIP_SIGNING: true # 如果暂时不需要签名，可以跳过
 
