@@ -1,0 +1,38 @@
+name: Build Electron App
+
+on:
+  push:
+    branches:
+      - main # 或者你自己的主分支名称
+  pull_request:
+    branches:
+      - main # 同样，适用于 PR 合并时触发构建
+
+jobs:
+  build:
+    runs-on: macos-latest # 使用 macOS 环境构建
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2 # 检出仓库代码
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16' # 设置 Node.js 版本
+
+    - name: Install dependencies
+      run: |
+        npm install # 或者你用的是 yarn，改为 yarn install
+
+    - name: Build Electron app for macOS
+      run: |
+        npm run dist # 假设你已经在 package.json 中配置了 dist 脚本来进行打包
+      env:
+        ELECTRON_BUILDER_SKIP_SIGNING: true # 如果暂时不需要签名，可以跳过
+
+    - name: Upload macOS build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-build
+        path: dist/mac/* # 你的构建产物路径，可以根据你项目的实际情况调整
