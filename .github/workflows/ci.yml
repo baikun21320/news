@@ -7,13 +7,16 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@v4
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: build
-        BUILD_SCRIPT: npm install && npm run build
+      - name: Install and Build
+        run: npm install && npm run build  # 先构建生成 build/ 文件夹
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # 部署到的分支
+          folder: build     # 要部署的文件夹（通常是构建后的目录）
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}  # 只有密钥需要用 env
